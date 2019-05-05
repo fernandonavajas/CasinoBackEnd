@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -22,20 +22,18 @@ import { PlatoService } from './plato/plato.service';
 import { MensajesService } from './mensajes/mensajes.service';
 import { UsuariosService } from './usuarios/usuarios.service';
 import { PedidosService } from './pedidos/pedidos.service';
+import { Logger } from './logger.middleware';
 
 //entitys
 import { Mensaje } from './entitys/mensaje.entity';
 import { Usuario } from './entitys/usuario.entity';
 import { Pedido } from './entitys/pedido.entity';
 import { Tipomenu } from './entitys/tipomenu.entity';
+import { Plato } from './entitys/plato.entity';
+import { Tokens } from './entitys/tokens.entity';
+import { Detalle } from './entitys/detalle.entity';
+import { Carta } from './entitys/carta.entity';
 
-/*type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'nest',
-      password: 'psql4141',
-      database: 'casinodb',
-      */
 
 @Module({
   imports: [
@@ -50,10 +48,16 @@ import { Tipomenu } from './entitys/tipomenu.entity';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Mensaje, Usuario, Pedido, Tipomenu])
+    TypeOrmModule.forFeature([Mensaje, Usuario, Pedido, Tipomenu, Plato, Tokens, Carta, Detalle])
 
   ],
   controllers: [AppController, MensajesController, UsuariosController, PedidosController, TipomenuController, PlatoController, TokensController, CartaController, DetalleController,],
   providers: [AppService, MensajesService, UsuariosService, PedidosService, TipomenuService, PlatoService, TokensService, CartaService, DetalleService],
 })
-export class AppModule { }
+export class AppModule implements NestModule{ 
+  configure (consumer: MiddlewareConsumer) {
+    consumer
+      .apply(Logger)
+      .forRoutes(UsuariosController);
+  }
+}

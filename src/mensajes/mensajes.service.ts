@@ -16,6 +16,10 @@ export class MensajesService {
         return await this.mensajeRepository.find();
     }
 
+    async getOne(idMensaje: number): Promise<Mensaje> {
+        return await this.mensajeRepository.findOne();
+    }
+
     async createMensaje(mensajeNuevo: CreateMensajeDto): Promise<Mensaje> {
         const nuevo = new Mensaje();
         nuevo.mensaje = mensajeNuevo.mensaje;

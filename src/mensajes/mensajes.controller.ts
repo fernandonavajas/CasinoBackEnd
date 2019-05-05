@@ -26,6 +26,15 @@ export class MensajesController {
         });
 
     }
+    @Get(':id')// Leer los datos
+    getOne(@Res() response, @Param ('id') idMesaje) {
+        this.mensajeServices.getOne(idMesaje).then(mensaje => {
+            response.status(HttpStatus.OK).json(mensaje);
+        }).catch(() => {
+            response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion de mensaje' });
+        });
+
+    }
 
     @Put(':id') // actualizar la data
     update(@Body() updateMensajeDto: CreateMensajeDto, @Res() response, @Param('id') idMensaje) {
@@ -44,6 +53,7 @@ export class MensajesController {
             response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'Error en la eliminación del mensaje' });
         });
     }
+
 
 }
 

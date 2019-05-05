@@ -1,17 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, ManyToOne } from "typeorm";
 import { Usuario } from "./usuario.entity";
+import { Detalle } from "./detalle.entity";
+import { networkInterfaces } from "os";
 
 @Entity()
 export class Pedido{
-    @PrimaryGeneratedColumn()
-    idpedido: number;
+    @PrimaryGeneratedColumn({type: "bigint"})
+    id: number;
     
     @Column({nullable: false})
     rut: number;
 
-    @Column({type: "date",nullable: false})
+    @Column({type: "date",nullable: false, default: "24/04/2019"})
     fecha: Date;
 
-    @OneToMany(type => Usuario, usuario => usuario.rut)
-    usuarios: Usuario[];
+    @ManyToOne(type => Usuario, usuario => usuario.Pedidos)
+    usuario: Usuario;
+
+    @OneToMany(type => Detalle, detalle => detalle.pedido)
+    detalles: Detalle[];
 }
