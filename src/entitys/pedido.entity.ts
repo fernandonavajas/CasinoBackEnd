@@ -14,7 +14,7 @@ export class Pedido{
     @Column({type: "date",nullable: false, default: "24/04/2019"})
     fecha: Date;
 
-    @ManyToOne(type => Usuario, usuario => usuario.Pedidos)
+    @ManyToOne(type => Usuario, usuario => usuario.pedidos, { nullable: false })
     usuario: Usuario;
 
     @OneToMany(type => Detalle, detalle => detalle.pedido)

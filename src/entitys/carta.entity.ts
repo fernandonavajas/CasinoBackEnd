@@ -19,4 +19,5 @@ export class Carta {
 
     @OneToMany(type => Detalle, detalle => detalle.carta, { nullable: false, })
     detalles: Detalle[];
+
 }

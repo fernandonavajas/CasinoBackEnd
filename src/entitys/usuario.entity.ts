@@ -25,4 +25,9 @@ export class Usuario{
 
     @OneToMany(type =>Tokens, tokens => tokens.usuario)
     tokens: Tokens[];
+
+    //@ManyToOne(type => Tipomenu, tipomenu => tipomenu.cartas, { nullable: false })
+    //tipomenu: Tipomenu;
+    //@OneToMany(type => Carta, carta => carta.tipomenu)
+    //cartas: Carta[];
 }

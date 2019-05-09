@@ -10,3 +10,13 @@ export class AppController {
     return this.appService.getHello();
   }
 }
+
+export function formateaRut(rut) {
+  var actual = rut.toString().replace(/^0+/, "");
+  if (actual != '' && actual.length > 1) {
+      var sinPuntos = actual.replace(/\./g, "");
+      var actualLimpio = sinPuntos.replace(/-/g, "");
+      var inicio = actualLimpio.substring(0, actualLimpio.length);
+  }
+  return inicio;
+}

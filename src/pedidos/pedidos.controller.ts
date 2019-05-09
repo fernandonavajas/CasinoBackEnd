@@ -1,10 +1,13 @@
-import { Controller, HttpStatus, Get, Res } from '@nestjs/common';
+import { Controller, HttpStatus, Get, Res, Body, Headers } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
+import { formateaRut } from 'src/app.controller';
 
 @Controller('pedidos')
 export class PedidosController {
 
     constructor(private pedidoServices: PedidosService) { }
+
+
     /*
         @Get()
         getAll(@Res() response) {
@@ -17,16 +20,25 @@ export class PedidosController {
     */
     /****************           Listar el historial de cada cliente ******************/
     @Get()
-    LisatPorFecha(@Res() response) {
+    ListarHistorialDeUsuarioPorFecha(@Headers() headers, @Res() response) {
         var dia = new Date();// fecha de hoy en formato date de postgress
-        console.log(dia);
+        var rut_formateado = formateaRut(headers.rut);
+        console.log(rut_formateado);
+        this.pedidoServices.ListarHistorial(rut_formateado).then(historialList => {
+            response.status(HttpStatus.OK).json(historialList);
+        }).catch(() => {
+            response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion del historial' });
+        });
+    }
 
-        // cambiar este rut para dejarlo por headers o body
-        var rut: number = 18990554;
-        this.pedidoServices.ListarHistorial(rut).then(historialList => {
+    @Get("/historial")
+    ListarHistorialAdmin(@Res() response) {
+        var dia = new Date();
+        this.pedidoServices.ListarHistorialAdmin().then(historialList => {
             response.status(HttpStatus.OK).json(historialList);
         }).catch(() => {
             response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion del historial' });
         });
     }
 }
+
