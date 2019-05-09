@@ -43,9 +43,16 @@ export class PedidosService {
             return e;
         }
     }
-
-    async ListarHistorialAdmin(): Promise<any[]> {
-
+    async listarRutsPedidos(): Promise<any[]> {
+        var fecha = new Date();
+        const rutPedidos = await createQueryBuilder(Pedido, 'pd')
+            .select('DISTINCT pd.rut')//DISTINCT
+            .where("fecha < :dt", { dt: fecha })
+            .take(30)
+            .getRawMany();
+        return await rutPedidos;
+    }
+    async ListarHistorialAdmin(rut): Promise<any[]> {
         try {
             const historial = await createQueryBuilder(Detalle, 'd')
                 .select([
@@ -61,10 +68,11 @@ export class PedidosService {
                     "tm.nombre",
                 ])
                 .innerJoin("d.pedido", "pd")
-                .innerJoin("pd.usuario","user")
+                .innerJoin("pd.usuario", "user")
                 .innerJoin("d.carta", "ca")
                 .innerJoin("ca.plato", "pl")
                 .innerJoin("ca.tipomenu", "tm")
+                .where("pd.rut = :rut", { rut: rut })
                 .orderBy("ca.fecha", "ASC")
                 .getMany();
             return await historial;

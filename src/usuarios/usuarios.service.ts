@@ -3,8 +3,6 @@ import { Repository, Connection, getRepository, createQueryBuilder } from 'typeo
 import { Usuario } from '../entitys/usuario.entity';
 import { Injectable } from '@nestjs/common';
 import { usuarioDto } from './usuario-dto';
-import { getConnection } from "typeorm";
-
 export class loginModel {
     rut: string;
     password: string;
@@ -17,7 +15,7 @@ export class UsuariosService {
         @InjectRepository(Usuario)
         private readonly usuariosRepository: Repository<Usuario>, ) { }
 
-    
+
     async getAll(): Promise<Usuario[]> {
         return await this.usuariosRepository.find();
     }
@@ -36,7 +34,7 @@ export class UsuariosService {
             .select("usuario")
             .from(Usuario, "usuario")
             .leftJoinAndSelect("usuario.tokens", "tokens")
-            .where("usuario.rut = :rut", { rut:parseInt(auth.rut) })
+            .where("usuario.rut = :rut", { rut: parseInt(auth.rut) })
             .getOne();
         return await usuario;
 

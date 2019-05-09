@@ -34,10 +34,24 @@ export class PedidosController {
     @Get("/historial")
     ListarHistorialAdmin(@Res() response) {
         var dia = new Date();
-        this.pedidoServices.ListarHistorialAdmin().then(historialList => {
-            response.status(HttpStatus.OK).json(historialList);
+        var hAdmin: any[] = [];
+        this.pedidoServices.listarRutsPedidos().then(listaRuts => {
+            listaRuts.forEach(rut => {
+                this.pedidoServices.ListarHistorialAdmin(rut.rut).then(historialUnicoAdmin => {
+
+                    hAdmin.push(historialUnicoAdmin);
+                    if(hAdmin.length==listaRuts.length){
+                        response.status(HttpStatus.OK).json(hAdmin);
+                    }
+                    
+                }).catch((e) => {
+                    console.log(e)
+                })
+            }) ;
+            
+
         }).catch(() => {
-            response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion del historial' });
+            response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion de los ruts de pedido' });
         });
     }
 }

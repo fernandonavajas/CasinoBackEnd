@@ -14,8 +14,8 @@ export class Plato{
     @Column({nullable: true, length: 400})
     descripcion: string;
 
-    @Column({type:"bytea", nullable: true})
-    foto: number;
+    @Column({nullable: true, length: 400})//type:"bytea"
+    foto: string;
 
     @Column({nullable: true})
     calorias: number;
