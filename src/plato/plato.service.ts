@@ -14,8 +14,8 @@ export class PlatoService {
         return await this.platoRepository.find();
     }
 
-    async getOne(id: number): Promise<Plato> {
-        return await this.platoRepository.findOne(id);
+    async getOne(idPlato: number): Promise<Plato> {
+        return await this.platoRepository.findOne(idPlato);
     }
     async createUser(platoNuevo: platoDto): Promise<Plato> {
         const nuevo = new Plato();

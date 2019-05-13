@@ -1,15 +1,16 @@
-import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, All, Next, Req, Header } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, Headers } from '@nestjs/common';
 import { UsuariosService, loginModel } from './usuarios.service';
 import { usuarioDto } from './usuario-dto';
+import { formateaRut } from 'src/app.controller';
 
 
 @Controller('usuarios')
 export class UsuariosController {
 
-    constructor(private usuarioServices: UsuariosService) { 
+    constructor(private usuarioServices: UsuariosService) {
     }
     //****************************       Listar todos los usuarios ******************************/
-    
+
     @Get()
     getAll(@Res() response) {
         this.usuarioServices.getAll().then(usuariosList => {
@@ -19,27 +20,37 @@ export class UsuariosController {
         });
     }
     //***********************        Obtener solo un usuario *********************************/
-    
+
     @Get(':id')
     getOne(@Res() response, @Param('id') id) {
-        this.usuarioServices.getOne(id).then(usuariosList => {
-            response.status(HttpStatus.OK).json(usuariosList);
+        this.usuarioServices.getOne(id).then(usuario => {
+            response.status(HttpStatus.OK).json(usuario);
         }).catch(() => {
             response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'Error en la obtencion de usuario1' });
         });
     }
 
     //************************************          Login           ********************************** */
-    /*
-    @Get('/login')
-    Autentificacion(@Body() auth: loginModel, @Res() response) {
-        this.usuarioServices.Loggin(auth).then(usuario => {
-            response.status(HttpStatus.OK).json(usuario);
-        }).catch(() => {
-            response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'Error de sesión, no figura en la base de datos' });
-        });
+
+    @Get('/login/auth')
+    Autentificacion(@Headers() headers, @Res() response) {
+        if (headers.rut != null) {
+            var codigo = formateaRut(headers.rut);
+            var pass = headers.password;
+            
+            var validado: loginModel = { rut: codigo, password: pass };
+            this.usuarioServices.Loggin(validado).then(usuario => {
+                response.status(HttpStatus.OK).json(usuario);
+            }).catch(() => {
+                response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'Error de sesión, no figura en la base de datos' });
+            });
+        }
+        else {
+
+            response.status(HttpStatus.BAD_REQUEST).json({ mensaje: "No ha ingresado rut de usuario" });
+        }
     }
-    */
+
     //*******************************         Crear usuario          ************************************/
     @Post()
     create(@Body() crearUsuarioDto: usuarioDto, @Res() response) {

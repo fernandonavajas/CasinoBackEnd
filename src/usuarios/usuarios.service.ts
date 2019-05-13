@@ -28,16 +28,21 @@ export class UsuariosService {
     }
     //************************************          Login           ********************************** */
     async Loggin(auth: loginModel): Promise<any> {
-        //***Validar Rut y seguir *****/
-        console.log('aqui');
-        const usuario = await createQueryBuilder()
-            .select("usuario")
-            .from(Usuario, "usuario")
-            .leftJoinAndSelect("usuario.tokens", "tokens")
-            .where("usuario.rut = :rut", { rut: parseInt(auth.rut) })
-            .getOne();
-        return await usuario;
-
+        try {
+            console.log(auth.rut,typeof(parseInt(auth.rut)))
+            const usuario = await createQueryBuilder(Usuario, 'u')
+                .select([
+                    "u.rut",
+                    "t.rol",
+                    "t.api_key",
+                ])
+                .innerJoin("u.tokens", "t")
+                .where("u.rut = :rut", { rut: parseInt(auth.rut) })
+                .getOne();
+            return await usuario;
+        } catch (e) {
+            return e;
+        }
     }
     async createUser(usuarioNuevo: usuarioDto): Promise<Usuario> {
         const nuevo = new Usuario();
