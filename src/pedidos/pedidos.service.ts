@@ -74,8 +74,7 @@ export class PedidosService {
         var fecha = new Date();
         const rutPedidos = await createQueryBuilder(Pedido, 'pd')
             .select('DISTINCT pd.rut')//DISTINCT
-            .where("fecha < :dt", { dt: fecha })
-            .take(30)
+            .where("fecha <= :dt", { dt: fecha })
             .getRawMany();
         return await rutPedidos;
     }
