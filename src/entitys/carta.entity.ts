@@ -11,13 +11,13 @@ export class Carta {
     @Column({ type: "date", nullable: false, })
     fecha: Date;
 
-    @ManyToOne(type => Plato, plato => plato.cartas, { nullable: false })
+    @ManyToOne(type => Plato, plato => plato.cartas, { nullable: false, onDelete: 'CASCADE' })
     plato: Plato;
 
-    @ManyToOne(type => Tipomenu, tipomenu => tipomenu.cartas, { nullable: false })
+    @ManyToOne(type => Tipomenu, tipomenu => tipomenu.cartas, { nullable: false, onDelete: 'CASCADE' })
     tipomenu: Tipomenu;
 
-    @OneToMany(type => Detalle, detalle => detalle.carta, { nullable: false, })
+    @OneToMany(type => Detalle, detalle => detalle.carta, { nullable: false})
     detalles: Detalle[];
 
 }

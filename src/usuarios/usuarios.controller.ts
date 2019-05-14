@@ -55,6 +55,7 @@ export class UsuariosController {
     @Post()
     create(@Body() crearUsuarioDto: usuarioDto, @Res() response) {
         console.log('entre pp');
+        
         this.usuarioServices.createUser(crearUsuarioDto)
             .then(usuario => {
                 response.status(HttpStatus.CREATED).json(usuario);
@@ -74,6 +75,7 @@ export class UsuariosController {
     //*******************************         Eliminar a un  usuario          **********************************/
     @Delete(':id')
     delete(@Res() response, @Param('id') idUsuario) {
+        console.log(idUsuario);
         this.usuarioServices.deleteUsuario(idUsuario).then(res => {
             response.status(HttpStatus.OK).json(res);
         }).catch(() => {

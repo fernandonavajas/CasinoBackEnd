@@ -1,8 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Connection, getRepository, createQueryBuilder } from 'typeorm';
+import { Repository, Connection, getRepository, createQueryBuilder, getConnection } from 'typeorm';
 import { Usuario } from '../entitys/usuario.entity';
 import { Injectable } from '@nestjs/common';
 import { usuarioDto } from './usuario-dto';
+import { Tokens } from 'src/entitys/tokens.entity';
+import { TokensService } from 'src/tokens/tokens.service';
+import { TokensController } from 'src/tokens/tokens.controller';
+
 export class loginModel {
     rut: string;
     password: string;
@@ -13,7 +17,7 @@ export class loginModel {
 export class UsuariosService {
     constructor(
         @InjectRepository(Usuario)
-        private readonly usuariosRepository: Repository<Usuario>, ) { }
+        private readonly usuariosRepository: Repository<Usuario>) { }
 
 
     async getAll(): Promise<Usuario[]> {
@@ -29,15 +33,19 @@ export class UsuariosService {
     //************************************          Login           ********************************** */
     async Loggin(auth: loginModel): Promise<any> {
         try {
-            console.log(auth.rut,typeof(parseInt(auth.rut)))
+            //console.log(auth.rut,typeof(parseInt(auth.rut)))
+            //console.log(auth.password,typeof(auth.password))
             const usuario = await createQueryBuilder(Usuario, 'u')
                 .select([
+                    "u.id",
+                    "u.nombre",
                     "u.rut",
                     "t.rol",
                     "t.api_key",
                 ])
                 .innerJoin("u.tokens", "t")
                 .where("u.rut = :rut", { rut: parseInt(auth.rut) })
+                .andWhere("t.pass = :pass", { pass: auth.password })
                 .getOne();
             return await usuario;
         } catch (e) {
@@ -50,7 +58,6 @@ export class UsuariosService {
         nuevo.rut = usuarioNuevo.rut;// modificar para que sea correcto
         nuevo.empleados = usuarioNuevo.empleados;
         nuevo.correo = usuarioNuevo.correo;
-
         return await this.usuariosRepository.save(nuevo);
     }
     async updateUsuario(idUsuario: number, usuarioActualizar: usuarioDto): Promise<Usuario> {
@@ -65,5 +72,7 @@ export class UsuariosService {
     async deleteUsuario(idUsuario: number): Promise<any> {
         return await this.usuariosRepository.delete(idUsuario);
     }
+
+    
 
 }

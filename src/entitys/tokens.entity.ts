@@ -14,13 +14,13 @@ export class Tokens{
     @Column({nullable: false, length: 255})
     pass: string;
 
-    @Column({nullable: false, unique: true, length: 255})
+    @Column({nullable: false, length: 255})
     api_key: string;
 
     @Column({nullable: false, length: 50})
     rol: string;
 
-    @ManyToOne(type => Usuario, usuario => usuario.tokens)
+    @ManyToOne(type => Usuario, usuario => usuario.tokens, { onDelete: 'CASCADE' })
     usuario: Usuario;
 
 }

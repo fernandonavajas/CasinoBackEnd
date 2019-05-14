@@ -1,6 +1,7 @@
-import { Controller, HttpStatus, Get, Res, Body, Headers } from '@nestjs/common';
+import { Controller, HttpStatus, Get, Res, Body, Headers, Post } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
 import { formateaRut } from 'src/app.controller';
+import { CreatePedidosDto } from './pedido-dto';
 
 @Controller('pedidos')
 export class PedidosController {
@@ -53,6 +54,18 @@ export class PedidosController {
         }).catch(() => {
             response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion de los ruts de pedido' });
         });
+    }
+
+    @Post()
+    create(@Body() pedido:CreatePedidosDto, @Res() response) {
+        console.log(pedido);
+        pedido.fecha=new Date();
+        this.pedidoServices.crearPedido(pedido)
+            .then(pedido => {
+                response.status(HttpStatus.CREATED).json(pedido);
+            }).catch(() => {
+                response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'Error en la creación del usuario' });
+            });
     }
 }
 

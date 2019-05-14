@@ -12,9 +12,9 @@ export class Detalle{
     @Column({nullable: false})
     cantidad: number;
 
-    @ManyToOne(type => Carta, carta => carta.detalles)
-    carta: Carta[];
+    @ManyToOne(type => Carta, carta => carta.detalles, { onDelete: 'CASCADE' })
+    carta: Carta;
 
-    @ManyToOne(type=> Pedido, pedido => pedido.detalles)
-    pedido: Pedido[];
+    @ManyToOne(type=> Pedido, pedido => pedido.detalles, { onDelete: 'CASCADE' })
+    pedido: Pedido;
 }
