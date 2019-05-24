@@ -27,7 +27,7 @@ export class PedidosService {
                 {
                     rut: pedido.rut,
                     fecha: pedido.fecha,
-                    usuario:{
+                    usuario: {
                         id: pedido.usuarioId
                     }
                 }
@@ -35,77 +35,18 @@ export class PedidosService {
             .execute();
 
     }
-
-
-
-
-
     /****************************** Mostar el historial del cliente */
 
-    async ListarHistorial(rut: string): Promise<any[]> {
+    async ListarHistorialCliente(rut: string): Promise<any[]> {
+        return await getConnection().createEntityManager().query(
+            `select * from public.listarPlatosHistorial(${rut}) order by fechacarta desc;`,
+        )
+    }
 
-        try {
-            const historial = await createQueryBuilder(Detalle, 'd')
-                .select([
-                    "pd.id",
-                    "pd.rut",
-                    "pd.fecha",
-                    "ca.id",
-                    "ca.fecha",
-                    "d.cantidad",
-                    "pl.nombre",
-                    "tm.id",
-                    "tm.nombre",
-                ])
-                .innerJoin("d.pedido", "pd")
-                .innerJoin("d.carta", "ca")
-                .innerJoin("ca.plato", "pl")
-                .innerJoin("ca.tipomenu", "tm")
-                .where("pd.rut = :rut", { rut: rut })
-                .orderBy("ca.fecha", "ASC")
-                .getMany();
-            return await historial;
-        }
-        catch (e) {
-            return e;
-        }
-    }
-    async listarRutsPedidos(): Promise<any[]> {
-        var fecha = new Date();
-        const rutPedidos = await createQueryBuilder(Pedido, 'pd')
-            .select('DISTINCT pd.rut')//DISTINCT
-            .where("fecha <= :dt", { dt: fecha })
-            .getRawMany();
-        return await rutPedidos;
-    }
-    async ListarHistorialAdmin(rut): Promise<any[]> {
-        try {
-            const historial = await createQueryBuilder(Detalle, 'd')
-                .select([
-                    "user.nombre",
-                    "pd.id",
-                    "pd.rut",
-                    "pd.fecha",
-                    "ca.id",
-                    "ca.fecha",
-                    "d.cantidad",
-                    "pl.nombre",
-                    "tm.id",
-                    "tm.nombre",
-                ])
-                .innerJoin("d.pedido", "pd")
-                .innerJoin("pd.usuario", "user")
-                .innerJoin("d.carta", "ca")
-                .innerJoin("ca.plato", "pl")
-                .innerJoin("ca.tipomenu", "tm")
-                .where("pd.rut = :rut", { rut: rut })
-                .orderBy("ca.fecha", "ASC")
-                .getMany();
-            return await historial;
-        }
-        catch (e) {
-            return e;
-        }
+    async ListarHistorialAdmin(): Promise<any[]> {
+        return await getConnection().createEntityManager().query(
+            `select * from public.listarPlatosHistorialAdmin() order by fechacarta desc, empresa desc;`,
+        )
     }
 
 }

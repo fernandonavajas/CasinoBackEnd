@@ -16,11 +16,22 @@ export class DetalleController {
             response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'error en la obtencion de mensaje' });
         });
     }
-
+    /*
     @Post()
     create(@Body() crearDetalleDto: CreateDetalleDto, @Res() response) {
         //console.log(crearDetalleDto);
         this.detalleService.crearDetalle(crearDetalleDto)
+            .then(detalle => {
+                response.status(HttpStatus.CREATED).json(detalle);
+            }).catch(() => {
+                response.status(HttpStatus.FORBIDDEN).json({ mensaje: 'Error en la creación del detalle' });
+            });
+    }
+    */
+    @Post()
+    create(@Body() creardetalle: CreateDetalleDto, @Res() response) {
+        //console.log(crearDetalleDto);
+        this.detalleService.crearDetalleBueno(creardetalle)
             .then(detalle => {
                 response.status(HttpStatus.CREATED).json(detalle);
             }).catch(() => {

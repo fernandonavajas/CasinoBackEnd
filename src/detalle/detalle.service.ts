@@ -24,15 +24,24 @@ export class DetalleService {
                 {
                     cantidad: nuevoDetalle.cantidad,
                     carta:{
-                        id: nuevoDetalle.cartaId
+                        id: nuevoDetalle.idCarta
                     },
                     pedido:{
-                        id: nuevoDetalle.pedidoId
+                        id: nuevoDetalle.idPedido
                     }
                 }
             )
             .execute();
        
+    }
+    async crearDetalleBueno(crearDetalle: CreateDetalleDto): Promise<any[]> {
+        console.log(crearDetalle.idPedido);
+        console.log(crearDetalle.idCarta);
+        console.log(crearDetalle.cantidad);
+    
+        return await getConnection().createEntityManager().query(
+            `select * from InsertarDetalle(${crearDetalle.idPedido}, ${crearDetalle.idCarta},${crearDetalle.cantidad})`,
+        )
     }
     
 }
