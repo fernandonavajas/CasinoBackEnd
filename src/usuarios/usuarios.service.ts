@@ -60,6 +60,15 @@ export class UsuariosService {
         nuevo.correo = usuarioNuevo.correo;
         return await this.usuariosRepository.save(nuevo);
     }
+
+    // nuevo metodo para ingresar usuario
+    
+    async crearusuarioyTokens(usuarioNuevo: usuarioDto): Promise<any[]> {
+        return await getConnection().createEntityManager().query(
+            `select * from crearusuario(${usuarioNuevo.rut},${usuarioNuevo.nombre},${usuarioNuevo.empleados},${usuarioNuevo.correo})`,
+        )
+    }
+
     async updateUsuario(idUsuario: number, usuarioActualizar: usuarioDto): Promise<Usuario> {
         const usuarioUpdate = await this.usuariosRepository.findOne(idUsuario);
         usuarioUpdate.nombre = usuarioActualizar.nombre;
