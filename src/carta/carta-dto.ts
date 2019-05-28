@@ -1,5 +1,9 @@
 export class CreateCartaDto {
-    platoId: number;
-    fecha: Date;
-    tipoMenuId: number;
+    fecha: string;
+    p1: string;
+    p2: string;
+    p3: string;
+    p4: string;
+    p5: string;
+    p6: string;
 }

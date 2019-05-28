@@ -8,7 +8,7 @@ export class Carta {
     @PrimaryGeneratedColumn({ type: "bigint" })
     id: number;
 
-    @Column({ type: "date", nullable: false, })
+    @Column({ type: "date", nullable: false})
     fecha: Date;
 
     @ManyToOne(type => Plato, plato => plato.cartas, { nullable: false, onDelete: 'CASCADE' })

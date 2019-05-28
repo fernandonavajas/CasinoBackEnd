@@ -34,10 +34,8 @@ import { Tokens } from './entitys/tokens.entity';
 import { Detalle } from './entitys/detalle.entity';
 import { Carta } from './entitys/carta.entity';
 
-
-@Module({
-  imports: [
-    TypeOrmModule.forRoot({
+/** 
+TypeOrmModule.forRoot({
 
       type: 'postgres',
       host: 'localhost',
@@ -45,9 +43,30 @@ import { Carta } from './entitys/carta.entity';
       username: 'postgres',
       password: 'psql4141',
       database: 'casinodb',
+      entities: [__dirname + '/**/ /**<este *.entity{.ts,.js}'],
+      synchronize: true,
+    
+    })
+    ,
+    TypeOrmModule.forFeature([Mensaje, Usuario, Pedido, Tipomenu, Plato, Tokens, Carta, Detalle])
+    */
+@Module({
+  imports: [
+     
+    TypeOrmModule.forRoot({
+
+      type: 'postgres',
+      host: 'db-postgresql-nyc1-95243-do-user-6136224-0.db.ondigitalocean.com',
+      port: 25060,
+      username: 'doadmin',
+      password: 'hsav4ey2sbd94nu5',
+      database: 'defaultdb',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-    }),
+      ssl: true
+    
+    })
+    ,
     TypeOrmModule.forFeature([Mensaje, Usuario, Pedido, Tipomenu, Plato, Tokens, Carta, Detalle])
 
   ],

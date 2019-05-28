@@ -11,7 +11,7 @@ export class Pedido{
     @Column({nullable: false})
     rut: number;
 
-    @Column({type: "date",nullable: false, default: "24/04/2019"})
+    @Column({type: "date",nullable: false})
     fecha: Date;
 
     @ManyToOne(type => Usuario, usuario => usuario.pedidos, { nullable: false, onDelete: 'CASCADE'})
