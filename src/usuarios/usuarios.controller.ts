@@ -56,7 +56,7 @@ export class UsuariosController {
     create(@Body() crearUsuarioDto: usuarioDto, @Res() response) {
         console.log('entre pp');
         
-        this.usuarioServices.createUser(crearUsuarioDto)
+        this.usuarioServices.crearusuarioyTokens(crearUsuarioDto)
             .then(usuario => {
                 response.status(HttpStatus.CREATED).json(usuario);
             }).catch(() => {
