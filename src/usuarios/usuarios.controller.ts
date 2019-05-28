@@ -54,8 +54,9 @@ export class UsuariosController {
     //*******************************         Crear usuario          ************************************/
     @Post()
     create(@Body() crearUsuarioDto: usuarioDto, @Res() response) {
-        console.log('entre pp');
-        
+        console.log(crearUsuarioDto);
+        //var rut=crearUsuarioDto.rut.toString();
+
         this.usuarioServices.crearusuarioyTokens(crearUsuarioDto)
             .then(usuario => {
                 response.status(HttpStatus.CREATED).json(usuario);

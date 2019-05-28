@@ -64,8 +64,9 @@ export class UsuariosService {
     // nuevo metodo para ingresar usuario
     
     async crearusuarioyTokens(usuarioNuevo: usuarioDto): Promise<any[]> {
+        console.log(usuarioNuevo);
         return await getConnection().createEntityManager().query(
-            `select * from crearusuario(${usuarioNuevo.rut},${usuarioNuevo.nombre},${usuarioNuevo.empleados},${usuarioNuevo.correo})`,
+            `select * from crearusuario(${usuarioNuevo.rut},'${usuarioNuevo.nombre}',${usuarioNuevo.empleados},'${usuarioNuevo.correo}')`,
         )
     }
 
