@@ -63,8 +63,15 @@ export class CartaService {
             .execute();
     }*/
     async crearCarta(carta: CreateCartaDto): Promise<any> {
-        
+        console.log(carta);
+        if(carta.p1==""){carta.p1="1"};
+        if(carta.p2==""){carta.p2="1"};
+        if(carta.p3==""){carta.p3="1"};
+        if(carta.p4==""){carta.p4="1"};
+        if(carta.p5==""){carta.p5="1"};
+        if(carta.p6==""){carta.p6="1"};
         var cartaF={
+            
             fecha: carta.fecha,
             p1: parseInt(carta.p1),
             p2: parseInt(carta.p2),
@@ -73,7 +80,7 @@ export class CartaService {
             p5: parseInt(carta.p5),
             p6: parseInt(carta.p6),
         }
-        console.log(cartaF);
+        //console.log(cartaF);
         //var stringfecha=fechaConsultada.toUTCString();
         console.log(carta);
         //console.log(stringfecha,typeof(stringfecha));
